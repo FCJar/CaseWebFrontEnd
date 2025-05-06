@@ -1,0 +1,31 @@
+.div-teste{
+    border : solid;
+    height : 80px;
+    width  : 100%;
+    display: flex;
+    justify-content: center;
+    gap : 15%; 
+
+    @media (max-width: 900px){
+        justify-content: space-between;
+        height: 40px;
+        flex-direction: column;
+    }
+}
+
+.div-button{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.button-teste{
+    width : 250px;
+    height : 80px;
+    border: solid;
+    border-radius: 15px;
+    background-color: yellow;
+    color: blue;
+    font-size: 20px;
+    font-style:italic;
+}
