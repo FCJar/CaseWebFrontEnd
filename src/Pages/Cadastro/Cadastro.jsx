@@ -40,7 +40,7 @@ function Cadastro() {
                 <Input {...register("email")} placeholder="E-mail"/>
                 <Input {...register("cargo")} placeholder="Cargo"/>
                 <Input {...register("status")} placeholder="status"/>
-                <Input {...register("senha")} placeholder="Repita sua senha"/> 
+                <Input {...register("senha")} type="password" placeholder="Repita sua senha"/> 
                 <MainButton>Criar Conta</MainButton> 
             </Form>   
             <TextField>
