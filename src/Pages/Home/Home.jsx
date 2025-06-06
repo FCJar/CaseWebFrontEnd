@@ -1,7 +1,9 @@
-import { Container } from "./Styles";
+import { Container, CarouselField, Table } from "./Styles";
 //import {useCreateUsuario, useGetUsuario} from "../../hooks/usuario";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
+import {Carousel} from "antd";
+import moment from "moment";
 
 import api from "../../services/api/api";
 
@@ -61,7 +63,37 @@ function Home(){
 
     return(
         <Container>
-            {usuarios.map((sessoes) => <h1> {sessoes.idusuario?.nome}</h1>)}
+            <CarouselField>
+                <Carousel autoplay>
+                    <div><div className="img">Slide 1</div></div>
+                    <div><div className="img">Slide 2</div></div>
+                    <div><div className="img">Slide 3</div></div>
+                </Carousel>
+        </CarouselField>
+        
+        <Table>
+            <thead>
+                <tr>
+                    <th>MEMBRO</th>
+                    <th>CHEGADA</th>
+                </tr>
+            </thead>
+            <tbody>
+                {sessoes && sessoes.filter(sessao => sessao != null && sessao.id_usuario != null).map(sessao =>{
+                    const nome = sessao.id_usuario.nome;
+                    const chegada = moment(sessao.createdAt).format("HH:mm");
+                    return(
+                        <tr>
+                            <td>{nome}</td>
+                            <td>{chegada}</td>
+                        </tr>
+
+                    );
+                })}
+
+            </tbody>
+        </Table>
+
         </Container>
     )
 }
