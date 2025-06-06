@@ -2,19 +2,20 @@ import {
     RouterProvider,
     createBrowserRouter,
     Route,
-    createRoutesFrontElements
+    createRoutesFromElements,
 } from "react-router-dom";
 
-import  Cadastro  from "./Pages/Cadastro/Cadastro";
-import  Home  from "./Pages/Home/Home";
-import  Login  from "./Pages/Login/Login";
-
+import  {AppLayout} from "./layouts"
+import  {NotFound, Login, Home, Cadastro}  from "./pages";
 const router = createBrowserRouter(
-    createRoutesFrontElements(
+    createRoutesFromElements(
         <Route>
-            <Route path="/" element={<Home/>}/>
-            <Route path="Cadastro" element={<Cadastro/>}/>
-            <Route path="Login" element={<Login/>}/>
+            <Route path="/" element={<AppLayout/>}>
+                <Route index element={<Home/>}/>
+                <Route path="Cadastro" element={<Cadastro/>}/>
+                <Route path="Login" element={<Login/>}/>
+                <Route path="*" element={<NotFound/>} />
+            </Route>
         </Route>
     )
 );

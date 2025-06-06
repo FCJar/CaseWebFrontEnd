@@ -1,34 +1,53 @@
-import React from'react';
+import{toast} from "react-toastify"
+import React from "react";
 import{ 
     Container,
-    Header,
-    Form,
     Title,
-    InputField,
+    Form,
     Input,
-    CadastroButton,
-    Logo,
+    MainButton,
+    TextField,
     LoginText
  } from './Styles'
 
+import {useCreateUsuario} from "../../hooks/usuario";
+import { useNavigate } from "react-router-dom"; 
+import {useForm} from "react-hook-form";
+
 function Cadastro() {
+    const {handleSubmit, register, formState: {errors}} = useForm({});
+    const { mutate: postUser, inPending } = useCreateUsuario({
+        onSuccess: () =>{     
+            toast.success("usuarios cadastrado");
+            queryClient.invalidateQueries({
+                queryKey: ['usuario'],
+            });
+        },
+        onError:(err) =>{
+            toast.error(err);
+        }
+    });
+
+    
+    const onSubmit = (data) =>{
+        postUser(data);
+    }
     return(
-        <Container>
-            <Header>
-                <Logo>CPE</Logo>
-            </Header>
-            <Form>
-            <Title>CADASTRO</Title>
-            <InputField>
-                <Input type="text" placeholder="Nome"/>
-                <Input type="email" placeholder="E-mail"/>
-                <Input type="text" placeholder="Cargo"/>
-                <Input type="password" placeholder="Senha"/>
-                <Input type="password" placeholder="Repita sua senha"/>  
-            </InputField>   
-            <CadastroButton>Criar Conta</CadastroButton>
-            <LoginText>Já tem conta? faça o login</LoginText>
-            </Form>
+        <Container>           
+            <Form onSubmit={handleSubmit(onSubmit)}>
+                <Title>Cadastro</Title>
+                <Input {...register("nome")} placeholder="Nome"/>
+                <Input {...register("email")} placeholder="E-mail"/>
+                <Input {...register("cargo")} placeholder="Cargo"/>
+                <Input {...register("status")} placeholder="status"/>
+                <Input {...register("senha")} placeholder="Repita sua senha"/> 
+                <MainButton>Criar Conta</MainButton> 
+            </Form>   
+            <TextField>
+                Já tem conta? Faça o login<LoginText to="/Login">aqui.</LoginText>
+            </TextField>
+
+            
         </Container>
     )
 }

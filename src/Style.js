@@ -7,3 +7,4 @@ export const DivTeste2 = Styled.div`
     border: solid;
     background-color: green;
 `
+
