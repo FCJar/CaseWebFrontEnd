@@ -11,7 +11,6 @@ import{
  } from './Styles'
 
 import {useCreateUsuario} from "../../hooks/usuario";
-import { useNavigate } from "react-router-dom"; 
 import {useForm} from "react-hook-form";
 
 function Cadastro() {
@@ -23,8 +22,8 @@ function Cadastro() {
                 queryKey: ['usuario'],
             });
         },
-        onError:(err) =>{
-            toast.error(err);
+        onError:() =>{
+            toast.error("cadastro ruim");
         }
     });
 
@@ -37,7 +36,7 @@ function Cadastro() {
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <Title>Cadastro</Title>
                 <Input {...register("nome")} placeholder="Nome"/>
-                <Input {...register("email")} placeholder="E-mail"/>
+                <Input {...register("email")}  type="email" placeholder="E-mail"/>
                 <Input {...register("cargo")} placeholder="Cargo"/>
                 <Input {...register("status")} placeholder="status"/>
                 <Input {...register("senha")} type="password" placeholder="Repita sua senha"/> 

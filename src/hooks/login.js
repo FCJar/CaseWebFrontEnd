@@ -1,21 +1,6 @@
-import api from "./api";
+import {useMutation} from "@tanstack/react-query";
+import {loginUsuario} from "../services/api/endpoints";
 
-const login = async(e) =>{
-    e.preventDefault();
-    setCarregando(true);
-    try{
-        const res = await api.post("/login",{email, senha});
-        const { token } = res.data;
-
-        setToken(token);
-        console.log(token);
-
-        toast.success("usuarios Logado");
-        navigate("/");
-    }catch(error){
-        console.error(erro);
-        alert(erro.response.data.message);
-    } finally{
-        setCarregando(false);
-        }
-    };
+export function uselogin({onSuccess = () => {}, onError = () => {}} = {}) { 
+    return useMutation({mutationFn: loginUsuario, onSuccess, onError});
+}

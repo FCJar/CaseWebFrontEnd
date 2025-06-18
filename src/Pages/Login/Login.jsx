@@ -10,40 +10,51 @@ import{
 } from './Styles'
 
 import { useNavigate } from "react-router-dom"; 
-import {useForm} from "react-hook-form";
-import api from "../../services/api/api";
 import useAuthStore from '../../stores/auth';
 import{toast} from "react-toastify"
+import { useForm } from 'react-hook-form';
+import { uselogin } from '../../hooks/login'; 
 
 
 function Login(){
     const navigate = useNavigate();
-    const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
-    const [carregando, setCarregando] = useState(false)
-    const token = useAuthStore((state) => state.token)
-    const usuario = useAuthStore((state) => state.usuario);
+    const [carregando, setCarregando] = useState(false);
     const setToken = useAuthStore((state) => state.setToken);
 
-    const handleSubmit = async(e) =>{
-        e.preventDefault();
-        setCarregando(true);
-        try{
-            const res = await api.post("/login",{email, senha});
-            const { token } = res.data;
+    const{
+        handleSubmit,
+        register,
+        formState: {errors},
+   } = useForm({});
+
+   const{mutate: postLogin, isPending } = uselogin({
+        onSuccess: (data)=>{
+            if(!data || !data.token){
+                toast.error("Token não recebido")
+                return;
+            }
+
+            console.log(data);
+
+            const { token } = data;
 
             setToken(token);
             console.log(token);
 
             toast.success("usuarios Logado");
             navigate("/");
-        }catch(error){
-          console.error(erro);
-          alert(erro.response.data.message);
-        } finally{
-            setCarregando(false);
+        }, 
+        onError:( error )=>{
+           
+            toast.error(error.message)
+            console.log(error.message)
+
         }
-    };
+   });
+
+   const onSubmit = (data)=>{
+    postLogin(data);
+   }
 
     if(carregando){
         return(
@@ -56,12 +67,10 @@ function Login(){
     return (
         <Container>
                       
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit(onSubmit)}>
                 <Title>LOGIN</Title> 
-                    <Input type="email" name="email" id="email" placeholder="E-mail"
-                     required onChange={(e)=>setEmail(e.target.value)}/>
-                    <Input type="password" name="senha" id="senha" placeholder="Senha"
-                    required onChange={(e)=>setSenha(e.target.value)}/>
+                    <Input  {...register("email")} type="email" id="email" placeholder="E-mail"/>
+                    <Input  {...register("senha")} type="password" placeholder="Senha"/>
             <MainButton type = "submit" >Entrar</MainButton>
             </Form>
                 <TextField>
