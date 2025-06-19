@@ -24,8 +24,8 @@ function Home(){
                 setUsuarios(res.data);
 
             }catch(error){
-              console.error(erro);
-              alert(erro.response.data.message);
+              console.error(error);
+              alert(error.response.data.message);
             } finally{
                 setCarregando(false);
             }
@@ -39,8 +39,8 @@ function Home(){
                     setSessoes(res.data);
 
                 }catch(error){
-                    console.error(erro);
-                    alert(erro.response.data.message);
+                    console.error(error);
+                    alert(error.response.data.message);
                 } finally{
                     setCarregando(false);
                 }
@@ -83,7 +83,7 @@ function Home(){
                     const nome = sessao.id_usuario.nome;
                     const chegada = moment(sessao.createdAt).format("HH:mm");
                     return(
-                        <tr>
+                        <tr key={sessao._id}>
                             <td>{nome}</td>
                             <td>{chegada}</td>
                         </tr>

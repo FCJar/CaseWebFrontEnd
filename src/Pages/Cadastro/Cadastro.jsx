@@ -15,15 +15,16 @@ import {useForm} from "react-hook-form";
 
 function Cadastro() {
     const {handleSubmit, register, formState: {errors}} = useForm({});
-    const { mutate: postUser, inPending } = useCreateUsuario({
+    const { mutate: postUser, isPending } = useCreateUsuario({
         onSuccess: () =>{     
             toast.success("usuarios cadastrado");
             queryClient.invalidateQueries({
                 queryKey: ['usuario'],
             });
         },
-        onError:() =>{
+        onError:(data) =>{
             toast.error("cadastro ruim");
+            console.log(data)
         }
     });
 

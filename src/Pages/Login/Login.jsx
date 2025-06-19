@@ -21,28 +21,24 @@ function Login(){
     const [carregando, setCarregando] = useState(false);
     const setToken = useAuthStore((state) => state.setToken);
 
-    const{
-        handleSubmit,
-        register,
-        formState: {errors},
-   } = useForm({});
-
-   const{mutate: postLogin, isPending } = uselogin({
+    const{handleSubmit, register, formState: {errors} } = useForm({});
+    const{mutate: postLogin, isPending } = uselogin({
         onSuccess: (data)=>{
-            if(!data || !data.token){
+            const token  = data.token;
+
+            if(!token){
+                console.log(token);
                 toast.error("Token não recebido")
+                console.log(token);
                 return;
             }
 
-            console.log(data);
-
-            const { token } = data;
-
-            setToken(token);
             console.log(token);
-
+            setToken(token);
+            
             toast.success("usuarios Logado");
             navigate("/");
+            
         }, 
         onError:( error )=>{
            
@@ -52,8 +48,8 @@ function Login(){
         }
    });
 
-   const onSubmit = (data)=>{
-    postLogin(data);
+   const onSubmit = async(data)=>{
+        postLogin(data);
    }
 
     if(carregando){
@@ -69,8 +65,8 @@ function Login(){
                       
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <Title>LOGIN</Title> 
-                    <Input  {...register("email")} type="email" id="email" placeholder="E-mail"/>
-                    <Input  {...register("senha")} type="password" placeholder="Senha"/>
+                    <Input  {...register('email', { required: true})} type="email" placeholder='e-mail'/>
+                    <Input  {...register('senha', { required: true})} type="password" placeholder='senha'/>
             <MainButton type = "submit" >Entrar</MainButton>
             </Form>
                 <TextField>
