@@ -20,10 +20,13 @@ export default function Header(){
             <LogoImg src = {logo} alt="Logo"/> 
 
             <HLink to="/Cadastro">Cadastro</HLink>
-            <HLink to="/">Home</HLink>
-            <HLink to="/">Perfil</HLink>
+
+            {usuario && <LogoButton type="button" onClick={logout} to="/">Home</LogoButton>}
+            
+            {usuario && <LogoButton type="button" onClick={logout} to="/">Perfil</LogoButton>}
             
             {!usuario && <HLink to="/Login">Login</HLink>}
+
             {usuario &&  <LogoButton type="button" onClick={logout}>Logout</LogoButton>} 
             
         </H3>
