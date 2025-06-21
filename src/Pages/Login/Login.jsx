@@ -25,26 +25,18 @@ function Login(){
     const{mutate: postLogin, isPending } = uselogin({
         onSuccess: (data)=>{
             const token  = data.token;
-
             if(!token){
-                console.log(token);
                 toast.error("Token não recebido")
-                console.log(token);
                 return;
             }
-
-            console.log(token);
             setToken(token);
-            
             toast.success("usuarios Logado");
             navigate("/");
             
         }, 
         onError:( error )=>{
-           
             toast.error(error.message)
             console.log(error.message)
-
         }
    });
 
