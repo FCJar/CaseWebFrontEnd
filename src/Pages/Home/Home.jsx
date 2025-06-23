@@ -2,32 +2,46 @@ import { Container, CarouselField, Table, Lbuton, LRow } from "./Styles";
 import {Carousel} from "antd";
 import moment from "moment";
 import { toast } from "react-toastify";
-import { useGetessoes } from "../../hooks/sessoes";
+import { useCreateSessoes, useGetessoes } from "../../hooks/sessoes";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "../../stores/auth";
+import {useQuery, useMutation, useQueryClient} from "@tanstack/react-query";
+
 function Home(){
     const navigate = useNavigate();
-
-    const {handleSubmit, register, formState: {errors}} = useForm({});
-
-    const {data}
-
+    const queryClient = useQueryClient();
 
     const { data : sessoes = [], isLoading, isError } = useGetessoes({
-
-        onSuccess: (data)=>{
-            console.log(data);
-            console.success("Sessões carregadas")
+        
+        onSuccess: ()=>{
+            toast.success("Sessões carregadas")
         },
         onError: (error)=>{
-            console.log(data);
             toast.error(error);
-            navigate("/");
+        }
+    });
+
+    const token = useAuthStore((state) => state.token);
+    const usuario = useAuthStore((state) => state.usuario);
+
+    const { mutate: postUser, isPending } = useCreateSessoes({
+        onSuccess: () =>{     
+            toast.success("Sessão cadastrada");
+            queryClient.invalidateQueries({
+                queryKey: ['sessoes'],
+            });
+        },
+        onError:(error) =>{
+            console.log(error)
+            toast.error("cadastro ruim")
+            console.log(token)
+            console.log(usuario._id)
         }
     });
 
     
-    const onSubmit = (data) =>{
-        postUser(data);
+    const onSubmit = () =>{
+        postUser({ id_usuario: usuario._id});
     }
 
     return(
@@ -41,7 +55,7 @@ function Home(){
         </CarouselField>
         
         <LRow>
-            <Lbuton onClick="">RealizarLogin</Lbuton>
+            <Lbuton onClick={onSubmit}>RealizarLogin</Lbuton>
         </LRow>
 
         <Table>

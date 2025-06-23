@@ -12,8 +12,12 @@ import{
 
 import {useCreateUsuario} from "../../hooks/usuario";
 import {useForm} from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import {useQuery, useMutation, useQueryClient} from "@tanstack/react-query";
 
 function Cadastro() {
+    const navigate = useNavigate(); 
+    const queryClient = useQueryClient();
     const {handleSubmit, register, formState: {errors}} = useForm({});
     const { mutate: postUser, isPending } = useCreateUsuario({
         onSuccess: () =>{     
@@ -21,6 +25,7 @@ function Cadastro() {
             queryClient.invalidateQueries({
                 queryKey: ['usuario'],
             });
+            navigate("/login");
         },
         onError:(data) =>{
             toast.error("cadastro ruim");

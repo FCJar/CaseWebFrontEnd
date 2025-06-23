@@ -39,6 +39,6 @@ export async function DeleteSessoes (id) {
 //login
 
 export async function loginUsuario(body){
-    const  data   = await api.post(`./login`, body);
-    return data.data;
+    const  { data }    = await api.post(`./login`, body);
+    return data;
 }
