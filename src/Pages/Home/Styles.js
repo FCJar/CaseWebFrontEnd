@@ -43,6 +43,24 @@ export const CarouselField = styled.div`
   }
 `;
 
+export const LRow = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto 1rem auto; 
+`;
+
+export const Lbuton = styled.button`
+  padding: 0.5rem 1.2rem;
+  background-color: black;
+  color: yellow;
+  border-radius: 8px;
+  border: 2px solid yellow;
+  font-size: 1rem;
+  cursor: pointer;
+`;
+
 export const Table = styled.table`
   width: 100%;
   max-width: 500px;
