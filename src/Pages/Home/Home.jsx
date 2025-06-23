@@ -21,6 +21,7 @@ function Home(){
         }
     });
 
+    
     const token = useAuthStore((state) => state.token);
     const usuario = useAuthStore((state) => state.usuario);
 
