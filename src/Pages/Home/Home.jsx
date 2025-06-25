@@ -6,18 +6,13 @@ import { useCreateSessoes, useGetessoes } from "../../hooks/sessoes";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../stores/auth";
 import { useQueryClient} from "@tanstack/react-query";
-//import  Modal from "../../components/modal/Modal";import React, { useState } from'react';
 import { useState } from'react';
-//import Modal from "../../components/modal/modal";
-
 import { Modal } from "../../components";
 
 function Home(){
     const navigate = useNavigate()
     const queryClient = useQueryClient()
-    //const { openModal, setOpenModal} = useState(false)
-    //const { makeLogin, setMakeLogin} = useState(false)
-
+    
     const { data : sessoes = [], isLoading, isError } = useGetessoes({
         
         onSuccess: ()=>{
