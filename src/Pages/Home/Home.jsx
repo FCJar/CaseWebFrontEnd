@@ -5,11 +5,18 @@ import { toast } from "react-toastify";
 import { useCreateSessoes, useGetessoes } from "../../hooks/sessoes";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../stores/auth";
-import {useQuery, useMutation, useQueryClient} from "@tanstack/react-query";
+import { useQueryClient} from "@tanstack/react-query";
+//import  Modal from "../../components/modal/Modal";import React, { useState } from'react';
+import { useState } from'react';
+//import Modal from "../../components/modal/modal";
+
+import { Modal } from "../../components";
 
 function Home(){
-    const navigate = useNavigate();
-    const queryClient = useQueryClient();
+    const navigate = useNavigate()
+    const queryClient = useQueryClient()
+    //const { openModal, setOpenModal} = useState(false)
+    //const { makeLogin, setMakeLogin} = useState(false)
 
     const { data : sessoes = [], isLoading, isError } = useGetessoes({
         
@@ -45,6 +52,12 @@ function Home(){
         postUser({ id_usuario: usuario._id});
     }
 
+    const [ openModal, setModalIsopen ] = useState(false);
+
+    if(!usuario){
+       navigate("/login");
+    }
+
     return(
         <Container>
             <CarouselField>
@@ -56,7 +69,7 @@ function Home(){
         </CarouselField>
         
         <LRow>
-            <Lbuton onClick={onSubmit}>RealizarLogin</Lbuton>
+            <Lbuton onClick={()=>setModalIsopen(true)}>RealizarLogin</Lbuton>
         </LRow>
 
         <Table>
@@ -85,6 +98,29 @@ function Home(){
 
             </tbody>
         </Table>
+
+            <Modal isOpen={openModal} isClose = {() => setModalIsopen(false)} >
+                <h2 style={{color:"#000"}}>Você deseja mesmo <br /> fazer login?</h2>
+                <p style={{color:"#333"}}>Tem certeza que você deseja fazer<br /> esse login?</p>
+                <div>
+                    Tem certeza que você deseja fazer esse login?
+                </div>
+
+                <button 
+                onClick={() => onSubmit()}
+                style={{
+                    backgroundColor: "transparent",
+                    color: "orange",
+                    border: "1px solid orange",
+                    fontSize: "1rem",
+                    borderRadius: "10px",
+                    padding: "12px 24px",
+                }}
+                >
+                    Login
+                </button>
+            </Modal>
+
 
         </Container>
     )

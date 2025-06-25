@@ -1,3 +1,4 @@
-export{default as StandardButton} from "./StandardButton/StandardButton";
-export{default as Header } from "./Header/Header";
-export{default as Footer } from"./Footer/Footer"
+export { default as StandardButton} from "./standardButton/StandardButton";
+export { default as Header } from "./header/Header";
+export { default as Footer } from "./footer/Footer";
+export { default as Modal } from "./modal/Modal";
