@@ -32,7 +32,7 @@ export async function GetSessoes () {
 }
 
 export async function DeleteSessoes (id) {
-    const { data } = await api.get(`./sessoes:${id}`);
+    const { data } = await api.delete(`./sessoes/${id}`);
     return data;
 }
 

@@ -2,19 +2,20 @@ import { Container, CarouselField, Table, Lbuton, LRow } from "./Styles";
 import {Carousel} from "antd";
 import moment from "moment";
 import { toast } from "react-toastify";
-import { useCreateSessoes, useGetessoes } from "../../hooks/sessoes";
+import { useCreateSessoes, useGetessoes, useDeleteSessoes } from "../../hooks/sessoes";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../stores/auth";
 import { useQueryClient} from "@tanstack/react-query";
 import { useState } from'react';
 import { Modal } from "../../components";
+import {DeleteOutlined} from "@ant-design/icons";
+import { Button } from "antd/es/radio";
 
 function Home(){
     const navigate = useNavigate()
     const queryClient = useQueryClient()
     
     const { data : sessoes = [], isLoading, isError } = useGetessoes({
-        
         onSuccess: ()=>{
             toast.success("Sessões carregadas")
         },
@@ -23,7 +24,6 @@ function Home(){
         }
     });
 
-    
     const token = useAuthStore((state) => state.token);
     const usuario = useAuthStore((state) => state.usuario);
 
@@ -42,7 +42,21 @@ function Home(){
         }
     });
 
-    
+    const { mutate: deleteUser} = useDeleteSessoes({
+        onSuccess: () =>{     
+            toast.success("Sessão deletada");
+            window.location.reload();
+        },
+        onError:(error) =>{
+            console.log(error)
+            toast.error("cadastro ruim")
+        }
+    });
+
+    const excluirUsuario = (id) =>{
+        deleteUser(id._id);
+    }
+
     const onSubmit = () =>{
         postUser({ id_usuario: usuario._id});
     }
@@ -74,6 +88,7 @@ function Home(){
                     <th>MEMBRO</th>
                     <th>CHEGADA</th>
                     <th>TEMPO</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -86,8 +101,12 @@ function Home(){
                             <td>{nome}</td>
                             <td>{chegada}</td>
                             <td>{tempo}</td>
+                            <td>{( sessao.id_usuario._id == usuario._id) &&
+                                <button onClick={ ()=> excluirUsuario(sessao.id_usuario) } >
+                                    <DeleteOutlined style={{ fontSize: '25px'}} />
+                                </button>}
+                                </td>
                         </tr>
-
                     );
                 })}
 
@@ -102,7 +121,7 @@ function Home(){
                 </div>
 
                 <button 
-                onClick={() => onSubmit()}
+                onClick={() => {onSubmit(); setModalIsopen(false);} }
                 style={{
                     backgroundColor: "transparent",
                     color: "orange",
